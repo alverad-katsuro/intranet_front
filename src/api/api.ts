@@ -1,12 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios, { Axios } from 'axios';
-import { PessoaFisicaFind } from '../model/edge/PessoaFisicaFind';
-import { PessoaJuridicaFind } from '../model/edge/PessoaJuridicaFind';
-import { SystemUserFind } from '../model/edge/SystemUserFind';
-import { AreaAtuacaoModel } from '../model/kernel/AreaAtuacaoModel';
-import { PessoaFisicaModel } from '../model/kernel/pessoa/PessoaFisicaModel';
-import { PessoaJuridicaModel } from '../model/kernel/pessoa/PessoaJuridicaModel';
-import { SystemUserModel } from '../model/kernel/systemuser/SystemUserModel';
+import { AnexoModelRequest } from '../model/kernel/anexo/request/AnexoModelRequest';
+import { AnexoCategoriaModel } from '../model/kernel/anexo/response/AnexoCategoriaModel';
+import { AnexoDominioModel } from '../model/kernel/anexo/response/AnexoDominioModel';
+import { AnexoSubCategoriaModel } from '../model/kernel/anexo/response/AnexoSubCategoriaModel';
 
 const apiAddress: string = "http://10.85.200.106:9000/"
 //const apiAddress: string = "http://10.0.0.182:8080/"
@@ -14,57 +11,56 @@ const apiAddress: string = "http://10.85.200.106:9000/"
 
 const apiAxios: Axios = axios.create({baseURL: apiAddress});
 
-export async function findSystemUser(systemUserFind: SystemUserFind): Promise<SystemUserModel[]> {
-    const resp = (await apiAxios.get<SystemUserModel[]>("/usuario/consultaUsuario", {params: systemUserFind})).data;
+
+// Anexos
+/**
+ * Anexos
+ * @param nomeAnexoDominio 
+ * @returns 
+ */
+export async function getAnexos(nomeAnexoDominio: String): Promise<AnexoModelRequest[]> {
+    const resp = (await apiAxios.get<AnexoModelRequest[]>("/anexo/consultarAnexos", {params: nomeAnexoDominio})).data;
     return resp;
 }
 
-export async function saveSystemUser(systemUser: SystemUserModel): Promise<SystemUserModel> {
-    const resp = (await apiAxios.post<SystemUserModel>("/usuario/salvar", systemUser)).data;
+export async function getAnexosAtivos(nomeAnexoDominio: String): Promise<AnexoModelRequest[]> {
+    const resp = (await apiAxios.get<AnexoModelRequest[]>("/anexo/consultarAnexosAtivos", {params: nomeAnexoDominio})).data;
     return resp;
 }
 
-export async function updateSystemUser(systemUser: SystemUserModel): Promise<SystemUserModel> {
-    const resp = (await apiAxios.put<SystemUserModel>("/usuario/atualizar", systemUser, {params: {susrId: systemUser.susrId}})).data;
+export async function saveAnexos(anexo: AnexoModelRequest): Promise<AnexoModelRequest> {
+    const resp = (await apiAxios.post<AnexoModelRequest>("/anexo/salvar", anexo, {
+        headers: {
+        'Content-Type': 'multipart/form-data'
+      }})).data;
     return resp;
 }
 
-export async function resetPasswordSystemUser(susrId: number): Promise<SystemUserModel> {
-    const resp = (await apiAxios.post<SystemUserModel>("/usuario/resetPassword", {}, {params: {susrId: susrId}})).data;
+export async function updateAnexos(anexo: AnexoModelRequest): Promise<AnexoModelRequest> {
+    const resp = (await apiAxios.put<AnexoModelRequest>("/anexo/atualizar", anexo, {
+        headers: {
+        'Content-Type': 'multipart/form-data'
+      }})).data;
     return resp;
 }
 
-export async function findPessoaFisica(pessoaFind: PessoaFisicaFind): Promise<PessoaFisicaModel[]> {
-    const resp = (await apiAxios.get<PessoaFisicaModel[]>("/pessoaFisica/consultarPessoaFisica", {params: pessoaFind})).data;
+// AnexoDominio
+
+export async function getAnexoDominiosAtivos(): Promise<AnexoDominioModel[]> {
+    const resp = (await apiAxios.get<AnexoDominioModel[]>("/anexoDominio/buscarAnexoDominiosAtivos")).data;
     return resp;
 }
 
-export async function findPessoaJuridica(pessoaFind: PessoaJuridicaFind): Promise<PessoaJuridicaModel[]> {
-    const resp = (await apiAxios.get<PessoaJuridicaModel[]>("/pessoaJuridica/consultarPessoaJuridica", {params: pessoaFind})).data;
+// AnexoCategoria
+
+export async function getAnexoCategoriasAtivos(idAnexoDominio: number): Promise<AnexoCategoriaModel[]> {
+    const resp = (await apiAxios.get<AnexoCategoriaModel[]>("/anexoCategoria/buscarAnexoCategoriasAtivos", {params : {idAnexoDominio}})).data;
     return resp;
 }
 
-export async function getAreaAtuacao(): Promise<AreaAtuacaoModel[]> {
-    const resp = (await apiAxios.get<AreaAtuacaoModel[]>("/areaAtuacao/consultaAreaAtuacao")).data;
-    return resp;
-}
+// AnexoSubCategoria
 
-export async function savePessoaJuridica(pessoaJuridica: PessoaJuridicaModel): Promise<PessoaJuridicaModel> {
-    const resp = (await apiAxios.post<PessoaJuridicaModel>("/pessoaJuridica/salvar", pessoaJuridica)).data;
-    return resp;
-}
-
-export async function updatePessoaJuridica(pessoaJuridica: PessoaJuridicaModel): Promise<PessoaJuridicaModel> {
-    const resp = (await apiAxios.put<PessoaJuridicaModel>("/pessoaJuridica/atualizar", pessoaJuridica, {params: {pesId: pessoaJuridica.pesId}})).data;
-    return resp;
-}
-
-export async function savePessoaFisica(pessoaFisica: PessoaFisicaModel): Promise<PessoaFisicaModel> {
-    const resp = (await apiAxios.post<PessoaFisicaModel>("/pessoaFisica/salvar", pessoaFisica)).data;
-    return resp;
-}
-
-export async function updatePessoaFisica(pessoaFisica: PessoaFisicaModel): Promise<PessoaFisicaModel> {
-    const resp = (await apiAxios.put<PessoaFisicaModel>("/pessoaFisica/atualizar", pessoaFisica, {params: {pesId: pessoaFisica.pesId}})).data;
+export async function getAnexoSubCategoriasAtivos(idAnexoCategoria: number): Promise<AnexoSubCategoriaModel[]> {
+    const resp = (await apiAxios.get<AnexoSubCategoriaModel[]>("/anexoSubCategoria/buscarAnexoSubCategoriasAtivos", {params : {idAnexoCategoria}})).data;
     return resp;
 }

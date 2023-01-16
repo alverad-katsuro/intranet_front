@@ -1,31 +1,31 @@
 import { ListGroup } from "flowbite-react";
-import { SystemUserModel } from "../../model/kernel/systemuser/SystemUserModel";
+import { AnexoModelRequest } from "../../model/kernel/anexo/request/AnexoModelRequest";
 import Busca from "../inputs/Busca";
 
 
-type BuscaFuncionarioProps = {
+type BuscaAnexoProps = {
     onClick: () => void;
     onChange(nomeBusca: string): void;
     valueSearch: string;
-    funcionarios: SystemUserModel[];
-    onSelect(funcionarioEscolhido:SystemUserModel): void;
-    funcionarioEscolhido: SystemUserModel | null;
-    className? : string;
+    anexos: AnexoModelRequest[];
+    onSelect(anexoEscolhido:AnexoModelRequest): void;
+    anexoEscolhido: AnexoModelRequest | null;
+    className?: string;
 }
 
-export default function BuscaFuncionario(props: BuscaFuncionarioProps) {
+export default function BuscaAnexo(props: BuscaAnexoProps) {
     return (
         <>
             <div className={props.className ? props.className : "w-full"}>
                     <Busca onClick={props.onClick} valueSearch={props.valueSearch} onChange={props.onChange} className={"rounded-b-none"} ></Busca>
-                    {props.funcionarios.length > 0 ?
+                    {props.anexos.length > 0 ?
                         <>
                             <div className="w-full overflow-y-auto max-h-40 pb-2">
                                 <ListGroup className="rounded-t-none">
-                                    {props.funcionarios.map((e, k) => {
+                                    {props.anexos.map((e, k) => {
                                         return (
                                             <ListGroup.Item key={k} onClick={() => {props.onSelect(e);}}>
-                                                {e.susrLogin} | {e.pessoa?.pesNome} | {e.pessoa?.pesCpf} | {e.pessoa?.pesStatus}
+                                                {e.tituloAnexo} | {e.ativo}
                                             </ListGroup.Item>
                                         )
                                     })}

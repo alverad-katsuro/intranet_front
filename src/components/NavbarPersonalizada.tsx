@@ -38,6 +38,11 @@ export default function NavbarPersonalizada() {
                     >
                         Home
                     </Navbar.Link>
+                    <Navbar.Link 
+                        href="/anexo" 
+                        active={route.route.search("/anexo") >= 0}>
+                        Anexo
+                    </Navbar.Link>
                     {/*
                     <Navbar.Link href="/funcionario" active={route.route.search("/funcionario") >= 0}>
                         Funcionario
