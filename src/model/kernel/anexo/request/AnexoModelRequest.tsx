@@ -3,6 +3,6 @@ export type AnexoModelRequest = {
     idAnexoDominio?: number,
     idAnexoCategoria?: number,
     idAnexoSubCategoria?: number,
-    ativo?: string,
+    ativo?: boolean,
     arquivo? : File
 }

@@ -24,7 +24,7 @@ export async function getAnexos(nomeAnexoDominio: String): Promise<AnexoModelReq
 }
 
 export async function getAnexosAtivos(nomeAnexoDominio: String): Promise<AnexoModelRequest[]> {
-    const resp = (await apiAxios.get<AnexoModelRequest[]>("/anexo/consultarAnexosAtivos", {params: nomeAnexoDominio})).data;
+    const resp = (await apiAxios.get<AnexoModelRequest[]>("/anexo/consultarAnexosAtivosIds", {params: {nomeAnexoDominio}})).data;
     return resp;
 }
 
@@ -36,7 +36,7 @@ export async function saveAnexos(anexo: AnexoModelRequest): Promise<AnexoModelRe
     return resp;
 }
 
-export async function updateAnexos(anexo: AnexoModelRequest): Promise<AnexoModelRequest> {
+export async function updateAnexo(anexo: AnexoModelRequest): Promise<AnexoModelRequest> {
     const resp = (await apiAxios.put<AnexoModelRequest>("/anexo/atualizar", anexo, {
         headers: {
         'Content-Type': 'multipart/form-data'
@@ -47,20 +47,20 @@ export async function updateAnexos(anexo: AnexoModelRequest): Promise<AnexoModel
 // AnexoDominio
 
 export async function getAnexoDominiosAtivos(): Promise<AnexoDominioModel[]> {
-    const resp = (await apiAxios.get<AnexoDominioModel[]>("/anexoDominio/buscarAnexoDominiosAtivos")).data;
+    const resp = (await apiAxios.get<AnexoDominioModel[]>("/anexoDominio/consultarAnexoDominiosAtivos")).data;
     return resp;
 }
 
 // AnexoCategoria
 
 export async function getAnexoCategoriasAtivos(idAnexoDominio: number): Promise<AnexoCategoriaModel[]> {
-    const resp = (await apiAxios.get<AnexoCategoriaModel[]>("/anexoCategoria/buscarAnexoCategoriasAtivos", {params : {idAnexoDominio}})).data;
+    const resp = (await apiAxios.get<AnexoCategoriaModel[]>("/anexoCategoria/consultarAnexoCategoriasAtivos", {params : {idAnexoDominio}})).data;
     return resp;
 }
 
 // AnexoSubCategoria
 
 export async function getAnexoSubCategoriasAtivos(idAnexoCategoria: number): Promise<AnexoSubCategoriaModel[]> {
-    const resp = (await apiAxios.get<AnexoSubCategoriaModel[]>("/anexoSubCategoria/buscarAnexoSubCategoriasAtivos", {params : {idAnexoCategoria}})).data;
+    const resp = (await apiAxios.get<AnexoSubCategoriaModel[]>("/anexoSubCategoria/consultarAnexoSubCategoriasAtivos", {params : {idAnexoCategoria}})).data;
     return resp;
 }

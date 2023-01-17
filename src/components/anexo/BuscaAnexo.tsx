@@ -25,7 +25,7 @@ export default function BuscaAnexo(props: BuscaAnexoProps) {
                                     {props.anexos.map((e, k) => {
                                         return (
                                             <ListGroup.Item key={k} onClick={() => {props.onSelect(e);}}>
-                                                {e.tituloAnexo} | {e.ativo}
+                                                {e.tituloAnexo} | {e.ativo ? "Ativo" : "Inativo"}
                                             </ListGroup.Item>
                                         )
                                     })}
